@@ -11,7 +11,8 @@ const CotizadorProvider = ({ children }) => {
   });
 
   const [error, setError] = useState('');
-  const [resultado, setResultado] = useState('');
+  const [resultado, setResultado] = useState(0);
+  const [cargando, setCargando] = useState(false);
 
   const handleChangeDatos = (e) => {
     setDatos({
@@ -42,10 +43,18 @@ const CotizadorProvider = ({ children }) => {
     resultado = resultado.toFixed(2);
     resultado = formatearDinero(resultado);
 
-    setResultado(resultado);
+    setCargando(true);
+    setTimeout(() => {
+      setCargando(false);
+      setResultado(resultado);
+    }, 3000);
   };
 
-  return <CotizadorContext.Provider value={{ datos, handleChangeDatos, error, setError, cotizarSeguro }}>{children}</CotizadorContext.Provider>;
+  return (
+    <CotizadorContext.Provider value={{ datos, handleChangeDatos, error, setError, cotizarSeguro, resultado, cargando }}>
+      {children}
+    </CotizadorContext.Provider>
+  );
 };
 
 export { CotizadorProvider };
